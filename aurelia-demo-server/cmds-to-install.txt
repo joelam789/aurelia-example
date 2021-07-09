@@ -1,0 +1,8 @@
+
+npm init
+npm install --save-dev typescript
+npm install --save-dev del gulp gulp-typescript@5 gulp-sourcemaps gulp-live-server
+
+npm install --save express cors body-parser
+npm install --save @types/node
+
