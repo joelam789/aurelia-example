@@ -18,13 +18,15 @@ export class App {
 		config.title = 'Contacts';
 		config.map([ // router will take the website's root directory as cwd
 			{ route: ['', 'welcome'], moduleId: 'welcome',   title: 'Welcome'},
-			{ route: 'contact-item/:id',  moduleId: 'contact-detail', name:'contact-item' }
+			{ route: 'contact-item/:id',  moduleId: 'contact-detail', name:'contact-item' },
+			{ route: 'contacts',  moduleId: 'contacts', name:'contacts', title: 'Contacts' }
 		]);
 		this.router = router;
 	}
 
 	refreshUI() {
 		this.eventChannel.publish(new RefreshContactListUI());
-		this.router.navigate("welcome");
+		//this.router.navigate("welcome");
+		this.router.navigate("contacts");
 	}
 }

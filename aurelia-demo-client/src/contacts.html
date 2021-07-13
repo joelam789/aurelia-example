@@ -1,0 +1,28 @@
+<template>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">EMail</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Operations</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr repeat.for="contact of contacts">
+        <th scope="row">${$index + 1}</th>
+        <td>${contact.firstName}</td>
+        <td>${contact.lastName}</td>
+        <td>${contact.email}</td>
+        <td>${contact.phoneNumber}</td>
+        <td>
+          <button type="button" class="btn btn-success" click.delegate="editItem(contact.id)">Edit</button>
+          <button type="button" class="btn btn-danger">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+</template>

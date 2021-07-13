@@ -3,6 +3,11 @@
     "app": {
         "ok": "OK",
         "cancel": "Cancel"
+    },
+
+    "contact": {
+        "edit": "Edit Contact",
+        "new": "Create New Contact"
     }
 
 }
