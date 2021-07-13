@@ -108,5 +108,33 @@ export class Contacts {
             }
         });
     }
+
+    addItem() {
+        console.log("addItem");
+
+        let selectedContact = {
+            id: 0,
+            firstName: "",
+            lastName: "",
+            email: "",
+            phoneNumber: ""
+        }
+        
+        console.log("open edit dialog...");
+        this.dialogService.open({viewModel: EditContactDlg, model: selectedContact})
+        .whenClosed((response) => {
+            if (!response.wasCancelled && response.output != undefined) {
+                console.log(response.output);
+                this.model.updateContact(response.output, (data) => {
+                    if (data) {
+                        this.eventChannel.publish(new RefreshContactListUI());
+                        console.log("saved item");
+                    } else console.log('Failed to save item!');
+                });
+            } else {
+                console.log('Give up saving a new contact record');
+            }
+        });
+    }
 }
 
