@@ -2,12 +2,19 @@
 {
     "app": {
         "ok": "OK",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "confirm": "Confirmation",
+        "yes": "Yes",
+        "no": "No"
     },
 
     "contact": {
         "edit": "Edit Contact",
         "new": "Create New Contact"
+    },
+
+    "confirm": {
+        "remove-selected": "Are you sure you want to delete this item?"
     }
 
 }

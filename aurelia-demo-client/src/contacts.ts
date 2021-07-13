@@ -11,6 +11,7 @@ import { Contact, ContactModel } from './contact-model';
 import { ContactUpdated, ContactViewed, RefreshContactListUI } from './messages';
 
 import { EditContactDlg } from './contact-edit';
+import { CommonConfirmDlg } from './common-confirm';
 
 @autoinject()
 export class Contacts {
@@ -68,10 +69,10 @@ export class Contacts {
 
         let id = contactId;
         let found = this.contacts.filter(x => x.id == id);
-        let editingContact = JSON.parse(JSON.stringify(found[0]));
+        let selectedContact = JSON.parse(JSON.stringify(found[0]));
         
         console.log("open edit dialog...");
-        this.dialogService.open({viewModel: EditContactDlg, model: editingContact})
+        this.dialogService.open({viewModel: EditContactDlg, model: selectedContact})
         .whenClosed((response) => {
             if (!response.wasCancelled && response.output != undefined) {
                 console.log(response.output);
@@ -83,6 +84,27 @@ export class Contacts {
                 });
             } else {
                 console.log('Give up editing a contact record');
+            }
+        });
+    }
+
+    deleteItem(contactId) {
+        console.log("deleteItem - " , contactId);
+
+        let id = contactId;
+        let found = this.contacts.filter(x => x.id == id);
+        let selectedContact = JSON.parse(JSON.stringify(found[0]));
+
+        this.dialogService.open({viewModel: CommonConfirmDlg, model: this.i18n.tr("confirm.remove-selected")})
+        .whenClosed((response) => {
+            if (!response.wasCancelled && response.output && response.output == 'yes') {
+                console.log(response.output);
+                this.model.deleteContact(selectedContact, (data) => {
+                    if (data) {
+                        this.eventChannel.publish(new RefreshContactListUI());
+                        console.log("deleted item");
+                    } else console.log('Failed to delete item!');
+                });
             }
         });
     }

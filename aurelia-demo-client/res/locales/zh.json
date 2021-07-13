@@ -2,11 +2,18 @@
 {
     "app": {
         "ok": "确定",
-        "cancel": "取消"
+        "cancel": "取消",
+        "confirm": "操作确认",
+        "yes": "是的",
+        "no": "不是"
     },
 
     "contact": {
         "edit": "编辑联络人",
         "new": "新建联络人"
+    },
+
+    "confirm": {
+        "remove-selected": "确要删除选中项目吗？"
     }
 }

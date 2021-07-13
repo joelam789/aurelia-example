@@ -36,6 +36,16 @@ export class ContactModel {
         }
     }
 
+    private deleteItem(contact: Contact) {
+        //console.log(this.contacts);
+        //console.log(contact);
+        let found = this.contacts.filter(x => x.id == contact.id);
+        if (found && found.length > 0) {
+            let index = this.contacts.indexOf(found[0]);
+            this.contacts.splice(index, 1);
+        }
+    }
+
     refreshContactList(callback?: (list: Array<Contact>) => void): void {
         
         this.getData(this.serviceAddress + "/list" + this.actionSuffix, (data) => {
@@ -70,6 +80,21 @@ export class ContactModel {
                 item = <Contact>data;
                 this.updateItem(item);
                 console.log("updated item");
+            }
+            if (callback != null) callback(item);
+        });
+        
+    }
+
+    deleteContact(contact: Contact, callback?: (item: Contact) => void): void {
+        
+        this.postData(this.serviceAddress + "/delete" + this.actionSuffix, contact, (data) => {
+            let item: Contact = null;
+            if (data == null) console.log('Failed to delete item!');
+            else {
+                item = <Contact>data;
+                this.deleteItem(item);
+                console.log("deleted item");
             }
             if (callback != null) callback(item);
         });

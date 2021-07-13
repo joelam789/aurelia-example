@@ -87,6 +87,18 @@ class ContactBook {
         return contact;
     }
 
+    deleteContactItem(contact: Contact): Contact {
+        //let instance = JSON.parse(JSON.stringify(contact));
+        let found = this._contacts.filter(x => x.id == contact.id);
+
+        if (found && found.length > 0) {
+            let index = this._contacts.indexOf(found[0]);
+            this._contacts.splice(index, 1);
+        }
+
+        return contact;
+    }
+
 }
 
 
@@ -112,10 +124,17 @@ app.get('/item', function(req, res) {
 });
 
 app.post('/save', parser.json(), function(req, res) {
-    console.log("[" + new Date().toLocaleTimeString() + "]", "request for save - ");
+    console.log("[" + new Date().toLocaleTimeString() + "]", "request to save - ");
 	//console.log(req.body);
     if (!req.body) return res.sendStatus(400);
     else res.json(book.saveContactItem(<Contact>(req.body)));
+});
+
+app.post('/delete', parser.json(), function(req, res) {
+    console.log("[" + new Date().toLocaleTimeString() + "]", "request to delete - ");
+	//console.log(req.body);
+    if (!req.body) return res.sendStatus(400);
+    else res.json(book.deleteContactItem(<Contact>(req.body)));
 });
 
 app.listen(process.env.PORT || 9080);
