@@ -1,9 +1,9 @@
 
-import {autoinject} from 'aurelia-framework';
-import {Router} from 'aurelia-router';
-import {EventAggregator} from 'aurelia-event-aggregator';
-import {Contact, ContactModel} from './contact-model';
-import {ContactUpdated, ContactViewed, RefreshContactListUI} from './messages';
+import { autoinject } from 'aurelia-framework';
+import { Router } from 'aurelia-router';
+import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
+import { Contact, ContactModel } from './contact-model';
+import { ContactUpdated, ContactViewed, RefreshContactListUI } from './messages';
 
 @autoinject()
 export class ContactList {
@@ -12,15 +12,29 @@ export class ContactList {
 
     contacts: Array<Contact> = [];
 
+    subscribers: Array<Subscription> = [];
+
     constructor(public model: ContactModel, public eventChannel: EventAggregator, public router: Router) {
-        eventChannel.subscribe(RefreshContactListUI, () => this.refreshData());
-        eventChannel.subscribe(ContactViewed, msg => this.select(msg.contact));
-        eventChannel.subscribe(ContactUpdated, msg => {
+        this.subscribers = [];
+    }
+
+    attached(argument) {
+        console.log("contact list created");
+
+        this.subscribers.push(this.eventChannel.subscribe(RefreshContactListUI, () => this.refreshData()));
+        this.subscribers.push(this.eventChannel.subscribe(ContactViewed, msg => this.select(msg.contact)));
+        this.subscribers.push(this.eventChannel.subscribe(ContactUpdated, msg => {
             let id = msg.contact.id;
             let found = this.contacts.filter(x => x.id == id);
             if (found != null && found.length > 0) Object.assign(found[0], msg.contact);
-        });
-        console.log("contact list created");
+        }));
+
+        this.refreshData();
+    }
+
+    detached(argument) {
+		for (let item of this.subscribers) item.dispose();
+        this.subscribers = [];
     }
 
     refreshData() {
@@ -33,10 +47,6 @@ export class ContactList {
             }
         });
 	}
-
-    created() {
-        this.refreshData();
-    }
 
     select(contact) {
         if (contact) {
