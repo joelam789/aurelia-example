@@ -18,7 +18,7 @@ export class App {
 		config.title = 'Contacts';
 		config.map([ // router will take the website's root directory as cwd
 			{ route: ['', 'welcome'], moduleId: 'welcome',   title: 'Welcome'},
-			{ route: 'contacts/:id',  moduleId: 'contact-detail', name:'contacts' }
+			{ route: 'contact-item/:id',  moduleId: 'contact-detail', name:'contact-item' }
 		]);
 		this.router = router;
 	}
